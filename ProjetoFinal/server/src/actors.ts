@@ -1,8 +1,8 @@
 import * as path from "path";
 const Datastore = require("nedb");
 
-export interface IMovie {
-    title :string , year: number , rating: number , category: string , director: string , description: string , image: string
+export interface IActor {
+    name: string, image: string, age: number, description: string
 }
 
 export class Worker {
@@ -10,15 +10,15 @@ export class Worker {
 
     constructor() {
         this.db = new Datastore({
-            filename: path.join(__dirname, "movies.db"),
+            filename: path.join(__dirname, "actors.db"),
             autoload: true
         });
     }
 
-    public listMovies(): Promise<IMovie[]> {
+    public listActors(): Promise<IActor[]> {
         return new Promise((inResolve, inReject) => {
             this.db.find({},
-                (inError: Error | null, inDocs: IMovie[]) => {
+                (inError: Error | null, inDocs: IActor[]) => {
                     if (inError) {
                         inReject(inError);
                     } else {
@@ -29,10 +29,10 @@ export class Worker {
         });
     }
 
-    public addMovie(inMovie: IMovie): Promise<IMovie> {
+    public addActor(inActor: IActor): Promise<IActor> {
         return new Promise((inResolve, inReject) => {
-            this.db.insert(inMovie,
-                (inError: Error | null, inNewDoc: IMovie) => {
+            this.db.insert(inActor,
+                (inError: Error | null, inNewDoc: IActor) => {
                     if (inError) {
                         inReject(inError);
                     } else {
@@ -43,7 +43,7 @@ export class Worker {
         });
     }
 
-    public deleteMovie(inID: string): Promise<void> {
+    public deleteActor(inID: string): Promise<void> {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID },
                 {},
@@ -57,5 +57,5 @@ export class Worker {
             );
         });
     }
-}
 
+}
