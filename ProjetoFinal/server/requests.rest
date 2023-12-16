@@ -2,70 +2,23 @@ GET http://localhost:8080/movies
 
 ###
 
-POST http://localhost:8080/movies
-Content-Type: application/json
-
-{
-    "title": "The Shawshank Redemption",
-    "year": 1994,
-    "rating": 9.3,
-    "category": "Drama",
-    "director": "Frank Darabont",
-    "description": "The history of the Shawshank prison and its prisoners.",
-    "image": "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg"
-}
-
-###
-
-POST http://localhost:8080/movies
-Content-Type: application/json
-
-{
-    "title": "The Godfather",
-    "year": 1972,
-    "rating": 9.2,
-    "category": "Crime",
-    "director": "Francis Ford Coppola",
-    "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-    "image": "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_ver1.jpg"
-}
-
-###
-
-POST http://localhost:8080/movies
-Content-Type: application/json
-
-{
-    "title": "The Dark Knight",
-    "year": 2008,
-    "rating": 9.0,
-    "category": "Action",
-    "director": "Christopher Nolan",
-    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-    "image": "https://upload.wikimedia.org/wikipedia/en/8/8a/Dark_Knight.jpg"
-}
-
-###
-
 GET http://localhost:8080/actors
-
-###
-
-POST http://localhost:8080/actors
-Content-Type: application/json
-
-{
-    "name": "Leonardo DiCaprio",
-    "image": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Leonardo_DiCaprio_2014.jpg",
-    "age": 46,
-    "description": "Leonardo Wilhelm DiCaprio is an American actor, film producer, and environmentalist. He has often played unconventional parts, particularly in biopics and period films. As of 2019, his films have grossed US$7.2 billion worldwide, and he has placed eight times in annual rankings of the world's highest-paid actors. His accolades include an Academy Award and three Golden Globe Awards."
-}
 
 ###
 
 GET http://localhost:8080/movieShows
 
-
 ###
 
-DELETE http://localhost:8080/movies/dpSu8b7I0ZVGi7q9
+POST http://localhost:8080/movies
+Content-Type: application/json
+
+{
+    "title": "American Pie",
+    "year": 1999,
+    "rating": 7.0,
+    "category": "Comedy",
+    "director": "Paul Weitz",
+    "description": "Four teenage boys enter a pact to lose their virginity by prom night.",
+    "image": "https://m.media-amazon.com/images/M/MV5BMTg3ODY5ODI1NF5BMl5BanBnXkFtZTgwMTkxNTYxMTE@._V1_.jpg"
+}

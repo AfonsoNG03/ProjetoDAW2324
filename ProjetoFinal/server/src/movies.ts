@@ -14,7 +14,7 @@ export class Worker {
             autoload: true
         });
     }
-
+    
     public listMovies(): Promise<IMovie[]> {
         return new Promise((inResolve, inReject) => {
             this.db.find({},
