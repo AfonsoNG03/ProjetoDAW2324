@@ -7,6 +7,8 @@ import * as Movies from "./movies";
 import { IMovie } from "./movies";
 import * as TvShows from "./tvShows";
 import { ITvShow } from "./tvShows";
+import * as Users from "./users";
+import { IUser } from "./users";
 
 const app: Express = express();
 
@@ -86,6 +88,54 @@ app.delete("/tvShows/:id", async (inRequest: Request, inResponse: Response) => {
         inResponse.send("error");
     }
 });
+
+// Rota para lidar com solicitações GET para "/users"
+app.get("/users", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        const users: IUser[] = await usersWorker.listUsers();
+        inResponse.json(users);
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
+
+// Rota para lidar com solicitações POST para "/register"
+app.post("/register", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        const user: IUser = await usersWorker.register(inRequest.body.username, inRequest.body.password);
+        inResponse.json(user);
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
+
+// Rota para fazer login
+
+app.post("/login", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        const user: IUser = await usersWorker.login(inRequest.body.username, inRequest.body.password);
+        inResponse.json(user);
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
+
+// Rota para lidar com solicitações DELETE para "/users/:id"
+
+app.delete("/users/:id", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        await usersWorker.deleteUser(inRequest.params.id);
+        inResponse.send("ok");
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
+
+
 
 app.listen(8080, () => { console.log("Server is listening on port 8080"); });
 

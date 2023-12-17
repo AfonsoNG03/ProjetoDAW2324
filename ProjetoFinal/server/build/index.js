@@ -39,6 +39,7 @@ const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
 const Movies = __importStar(require("./movies"));
 const TvShows = __importStar(require("./tvShows"));
+const Users = __importStar(require("./users"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/", express_1.default.static(path_1.default.join(__dirname, " ../../client/dist")));
@@ -108,6 +109,50 @@ app.delete("/tvShows/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, 
     try {
         const tvShowsWorker = new TvShows.Worker();
         yield tvShowsWorker.deleteTvShow(inRequest.params.id);
+        inResponse.send("ok");
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
+// Rota para lidar com solicitações GET para "/users"
+app.get("/users", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        const users = yield usersWorker.listUsers();
+        inResponse.json(users);
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
+// Rota para lidar com solicitações POST para "/register"
+app.post("/register", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        const user = yield usersWorker.register(inRequest.body.username, inRequest.body.password);
+        inResponse.json(user);
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
+// Rota para fazer login
+app.post("/login", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        const user = yield usersWorker.login(inRequest.body.username, inRequest.body.password);
+        inResponse.json(user);
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
+// Rota para lidar com solicitações DELETE para "/users/:id"
+app.delete("/users/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        yield usersWorker.deleteUser(inRequest.params.id);
         inResponse.send("ok");
     }
     catch (inError) {
