@@ -22,15 +22,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Worker = void 0;
 const path = __importStar(require("path"));
@@ -80,37 +71,22 @@ class Worker {
         });
     }
     addMoviesFromFile(filePath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // Read the content of movies.json
-                const fileContent = fs.readFileSync(filePath, "utf8");
-                // Parse the JSON content
-                const movies = JSON.parse(fileContent);
-                // Add each movie to the NeDB database
-                for (const movie of movies) {
-                    yield this.addMovie(movie);
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err);
+                    return;
                 }
-                console.log("Movies added to the database successfully.");
-            }
-            catch (error) {
-                console.error("Error adding movies to the database:", error);
-                throw error;
-            }
+                try {
+                    const movies = JSON.parse(data);
+                    const promises = movies.map(movie => this.addMovie(movie));
+                    Promise.all(promises).then(resolve).catch(reject);
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
         });
     }
 }
 exports.Worker = Worker;
-const worker = new Worker();
-const filePath = path.join(__dirname, "movies_transformed.json");
-// Add movies from the file to the database
-worker.addMoviesFromFile(filePath)
-    .then(() => {
-    // List movies after adding
-    return worker.listMovies();
-})
-    .then((movies) => {
-    console.log("Movies in the database:", movies);
-})
-    .catch((error) => {
-    console.error("Error:", error);
-});

@@ -38,8 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
 const Movies = __importStar(require("./movies"));
-const Actors = __importStar(require("./actors"));
-const MovieShows = __importStar(require("./movieShows"));
+const TvShows = __importStar(require("./tvShows"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/", express_1.default.static(path_1.default.join(__dirname, " ../../client/dist")));
@@ -82,66 +81,33 @@ app.delete("/movies/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, v
         inResponse.send("error");
     }
 }));
-// Rota para lidar com solicitações GET para "/actors"
-app.get("/actors", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+// Rota para lidar com solicitações GET para "/tvShows"
+app.get("/tvShows", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const actorsWorker = new Actors.Worker();
-        const actors = yield actorsWorker.listActors();
-        inResponse.json(actors);
+        const tvShowsWorker = new TvShows.Worker();
+        const tvShows = yield tvShowsWorker.listTvShows();
+        inResponse.json(tvShows);
     }
     catch (inError) {
         inResponse.send("error");
     }
 }));
-// Rota para lidar com solicitações POST para "/actors"
-app.post("/actors", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+// Rota para lidar com solicitações POST para "/tvShows"
+app.post("/tvShows", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const actorsWorker = new Actors.Worker();
-        const actor = yield actorsWorker.addActor(inRequest.body);
-        inResponse.json(actor);
+        const tvShowsWorker = new TvShows.Worker();
+        const tvShow = yield tvShowsWorker.addTvShow(inRequest.body);
+        inResponse.json(tvShow);
     }
     catch (inError) {
         inResponse.send("error");
     }
 }));
-// Rota para lidar com solicitações DELETE para "/actors/:id"
-app.delete("/actors/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+// Rota para lidar com solicitações DELETE para "/tvShows/:id"
+app.delete("/tvShows/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const actorsWorker = new Actors.Worker();
-        yield actorsWorker.deleteActor(inRequest.params.id);
-        inResponse.send("ok");
-    }
-    catch (inError) {
-        inResponse.send("error");
-    }
-}));
-// Rota para lidar com solicitações GET para "/movieShows"
-app.get("/movieShows", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const movieShowsWorker = new MovieShows.Worker();
-        const movieShows = yield movieShowsWorker.listMovieShows();
-        inResponse.json(movieShows);
-    }
-    catch (inError) {
-        inResponse.send("error");
-    }
-}));
-// Rota para lidar com solicitações POST para "/movieShows"
-app.post("/movieShows", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const movieShowsWorker = new MovieShows.Worker();
-        const movieShow = yield movieShowsWorker.addMovieShow(inRequest.body);
-        inResponse.json(movieShow);
-    }
-    catch (inError) {
-        inResponse.send("error");
-    }
-}));
-// Rota para lidar com solicitações DELETE para "/movieShows/:id"
-app.delete("/movieShows/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const movieShowsWorker = new MovieShows.Worker();
-        yield movieShowsWorker.deleteMovieShow(inRequest.params.id);
+        const tvShowsWorker = new TvShows.Worker();
+        yield tvShowsWorker.deleteTvShow(inRequest.params.id);
         inResponse.send("ok");
     }
     catch (inError) {

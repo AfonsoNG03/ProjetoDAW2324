@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as fs from "fs";
 const Datastore = require("nedb");
 
 export interface IMovie {
@@ -55,6 +56,24 @@ export class Worker {
                     }
                 }
             );
+        });
+    }
+
+    public addMoviesFromFile(filePath: string): Promise<IMovie[]> {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                try {
+                    const movies: IMovie[] = JSON.parse(data);
+                    const promises = movies.map(movie => this.addMovie(movie));
+                    Promise.all(promises).then(resolve).catch(reject);
+                } catch (e) {
+                    reject(e);
+                }
+            });
         });
     }
 }

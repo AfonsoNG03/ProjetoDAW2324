@@ -2,11 +2,7 @@ GET http://localhost:8080/movies
 
 ###
 
-GET http://localhost:8080/actors
-
-###
-
-GET http://localhost:8080/movieShows
+GET http://localhost:8080/tvShows
 
 ###
 

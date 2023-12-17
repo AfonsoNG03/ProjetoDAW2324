@@ -25,15 +25,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Worker = void 0;
 const path = __importStar(require("path"));
+const fs = __importStar(require("fs"));
 const Datastore = require("nedb");
 class Worker {
     constructor() {
         this.db = new Datastore({
-            filename: path.join(__dirname, "moviesShows.db"),
+            filename: path.join(__dirname, "tvShows.db"),
             autoload: true
         });
     }
-    listMovieShows() {
+    listTvShows() {
         return new Promise((inResolve, inReject) => {
             this.db.find({}, (inError, inDocs) => {
                 if (inError) {
@@ -45,7 +46,7 @@ class Worker {
             });
         });
     }
-    addMovieShow(inMovieShow) {
+    addTvShow(inMovieShow) {
         return new Promise((inResolve, inReject) => {
             this.db.insert(inMovieShow, (inError, inNewDoc) => {
                 if (inError) {
@@ -57,7 +58,7 @@ class Worker {
             });
         });
     }
-    deleteMovieShow(inID) {
+    deleteTvShow(inID) {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID }, {}, (inError, inNumRemoved) => {
                 if (inError) {
@@ -65,6 +66,24 @@ class Worker {
                 }
                 else {
                     inResolve();
+                }
+            });
+        });
+    }
+    addTvShowsFromFile(filePath) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                try {
+                    const tvShows = JSON.parse(data);
+                    const promises = tvShows.map(tvShow => this.addTvShow(tvShow));
+                    Promise.all(promises).then(resolve).catch(reject);
+                }
+                catch (e) {
+                    reject(e);
                 }
             });
         });
