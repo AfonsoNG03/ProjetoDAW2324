@@ -116,8 +116,8 @@ app.post("/register", async (inRequest: Request, inResponse: Response) => {
 app.post("/login", async (inRequest: Request, inResponse: Response) => {
     try {
         const usersWorker: Users.Worker = new Users.Worker();
-        const user: IUser = await usersWorker.login(inRequest.body.username, inRequest.body.password);
-        inResponse.json(user);
+        const {user , token} = await usersWorker.login(inRequest.body.username, inRequest.body.password);
+        inResponse.json({user, token});
     } catch (inError) {
         inResponse.send("error");
     }
@@ -135,7 +135,17 @@ app.delete("/users/:id", async (inRequest: Request, inResponse: Response) => {
     }
 });
 
+// Rota para lidar com solicitações POST para "/users/:id/favoriteMovies"
 
+app.post("/users/:id/favoriteMovies", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        const user: IUser = await usersWorker.addFavoriteMovie(inRequest.params.id, inRequest.body.movieID);
+        inResponse.json(user);
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
 
 app.listen(8080, () => { console.log("Server is listening on port 8080"); });
 

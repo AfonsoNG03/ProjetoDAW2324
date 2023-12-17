@@ -36,6 +36,7 @@ exports.Worker = void 0;
 const path = __importStar(require("path"));
 const Datastore = require("nedb");
 const bcrypt = __importStar(require("bcrypt"));
+const jwt = __importStar(require("jsonwebtoken"));
 class Worker {
     constructor() {
         this.db = new Datastore({
@@ -64,7 +65,6 @@ class Worker {
                 inReject(inError);
             }
             const inUser = { username: username, password: password, favoriteMovies: [], favoriteTvShows: [] };
-            console.log(inUser);
             this.db.insert(inUser, (inError, inNewDoc) => {
                 if (inError) {
                     inReject(inError);
@@ -96,7 +96,8 @@ class Worker {
                 const user = yield this.getUser(username);
                 const match = yield bcrypt.compare(password, user.password);
                 if (match) {
-                    inResolve(user);
+                    const token = jwt.sign({ username: user.username }, 'your-secret-key', { expiresIn: '1h' });
+                    inResolve({ user, token });
                 }
                 else {
                     inReject(new Error("Invalid credentials."));
@@ -118,6 +119,44 @@ class Worker {
                 }
             });
         });
+    }
+    addFavoriteMovie(inUsername, inMovie) {
+        return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield this.getUser(inUsername);
+                user.favoriteMovies.push(inMovie);
+                this.db.update({ user }, user, {}, (inError, inNumReplaced) => {
+                    if (inError) {
+                        inReject(inError);
+                    }
+                    else {
+                        inResolve(user);
+                    }
+                });
+            }
+            catch (inError) {
+                inReject(inError);
+            }
+        }));
+    }
+    addFavoriteTvShow(inUsername, inTvShow) {
+        return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield this.getUser(inUsername);
+                user.favoriteTvShows.push(inTvShow);
+                this.db.update({ user }, user, {}, (inError, inNumReplaced) => {
+                    if (inError) {
+                        inReject(inError);
+                    }
+                    else {
+                        inResolve(user);
+                    }
+                });
+            }
+            catch (inError) {
+                inReject(inError);
+            }
+        }));
     }
 }
 exports.Worker = Worker;

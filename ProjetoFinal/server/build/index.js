@@ -141,8 +141,8 @@ app.post("/register", (inRequest, inResponse) => __awaiter(void 0, void 0, void 
 app.post("/login", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const usersWorker = new Users.Worker();
-        const user = yield usersWorker.login(inRequest.body.username, inRequest.body.password);
-        inResponse.json(user);
+        const { user, token } = yield usersWorker.login(inRequest.body.username, inRequest.body.password);
+        inResponse.json({ user, token });
     }
     catch (inError) {
         inResponse.send("error");
@@ -154,6 +154,17 @@ app.delete("/users/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, vo
         const usersWorker = new Users.Worker();
         yield usersWorker.deleteUser(inRequest.params.id);
         inResponse.send("ok");
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
+// Rota para lidar com solicitações POST para "/users/:id/favoriteMovies"
+app.post("/users/:id/favoriteMovies", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        const user = yield usersWorker.addFavoriteMovie(inRequest.params.id, inRequest.body.movieID);
+        inResponse.json(user);
     }
     catch (inError) {
         inResponse.send("error");

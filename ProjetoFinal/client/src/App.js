@@ -1,42 +1,23 @@
-import { useState, useEffect } from "react";
-import MovieCard from "./MovieCard";
-
-const API_BASE = "http://localhost:8080";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Movies from './pages/movies';
+import TvShows from './pages/tvShows';
+import Login from './pages/login';
+import Register from './pages/register';
+import Home from './pages/home';
 
 function App() {
 
-	const [movies, setMovies] = useState([]);
-
-	useEffect(() => {
-		getMovies();
-	}, []);
-
-	const getMovies = async () => {
-		try {
-			const response = await fetch(API_BASE + "/movies");
-			const data = await response.json();
-			setMovies(data);
-			console.log(data);
-		}
-		catch (error) {
-			console.log(error);
-		}
-	}
-
 	return (
-		<div className="App">
-			<h1>Welcome</h1>
-			<h4>ahhahahaha</h4>
-
-			<div className="container">
-				<div className="row">
-					{movies.map((movie) => (
-						<div className="col-sm-3" key={movie.id}>
-							<MovieCard movie={movie} />
-						</div>
-					))}
-				</div>
-			</div>
+		<div>
+			<BrowserRouter>
+				<Routes>
+					<Route index element={<Home />} />
+					<Route path="/tvShows" element={<TvShows />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/movies" element={<Movies />} />
+				</Routes>
+			</BrowserRouter>
 		</div>
 	);
 }

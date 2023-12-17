@@ -3,6 +3,7 @@ import { IMovie } from "./movies";
 import { ITvShow } from "./tvShows";
 const Datastore = require("nedb");
 import * as bcrypt from "bcrypt";
+import * as jwt from 'jsonwebtoken';
 
 export interface IUser {
     username: string, password: string, favoriteMovies: IMovie[], favoriteTvShows: ITvShow[]
@@ -70,13 +71,14 @@ export class Worker {
         });
     }
 
-    public login(username: string, password: string): Promise<IUser> {
+    public login(username: string, password: string): Promise<{user: IUser, token: string}> {
         return new Promise(async (inResolve, inReject) => {
             try {
                 const user: IUser = await this.getUser(username);
                 const match: boolean = await bcrypt.compare(password, user.password);
                 if (match) {
-                    inResolve(user);
+                    const token = jwt.sign({ username: user.username }, 'your-secret-key', { expiresIn: '1h' });
+                    inResolve({user, token});
                 } else {
                     inReject(new Error("Invalid credentials."));
                 }
