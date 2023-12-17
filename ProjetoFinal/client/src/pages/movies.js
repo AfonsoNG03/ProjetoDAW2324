@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE = "http://localhost:8080";
 
 function Movies() {
+	const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
 
 	useEffect(() => {
@@ -24,6 +26,8 @@ function Movies() {
 
 	return (
 		<div className="App">
+			<button onClick={() => navigate("/")}>Home</button>
+			<button onClick={() => navigate("/tvShows")}>tvShows</button>
 			<div className="container">
 				<div className="row">
 					{movies.map((movie) => (

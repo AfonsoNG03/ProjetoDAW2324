@@ -8,3 +8,8 @@ body {
     background-color: var(--dark-alt);
     color: var(--light);
 }
+
+button {
+    background-color: var(--light);
+    color: var(--dark);
+}
