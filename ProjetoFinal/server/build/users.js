@@ -90,6 +90,21 @@ class Worker {
             });
         });
     }
+    getUserByID(inID) {
+        return new Promise((inResolve, inReject) => {
+            this.db.find({ _id: inID }, (inError, inDocs) => {
+                if (inError) {
+                    inReject(inError);
+                }
+                else if (inDocs.length === 0) {
+                    inReject(new Error("User not found."));
+                }
+                else {
+                    inResolve(inDocs[0]);
+                }
+            });
+        });
+    }
     login(username, password) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -120,12 +135,12 @@ class Worker {
             });
         });
     }
-    addFavoriteMovie(inUsername, inMovie) {
+    updateFavoriteMovies(inID, inFavoriteMovies) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield this.getUser(inUsername);
-                user.favoriteMovies.push(inMovie);
-                this.db.update({ user }, user, {}, (inError, inNumReplaced) => {
+                const user = yield this.getUserByID(inID);
+                user.favoriteMovies = inFavoriteMovies;
+                this.db.update({ _id: inID }, { $set: { favoriteMovies: inFavoriteMovies } }, {}, (inError, inNumReplaced) => {
                     if (inError) {
                         inReject(inError);
                     }
@@ -139,11 +154,11 @@ class Worker {
             }
         }));
     }
-    addFavoriteTvShow(inUsername, inTvShow) {
+    updateFavoriteTvShows(inID, inFavoriteTvShows) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield this.getUser(inUsername);
-                user.favoriteTvShows.push(inTvShow);
+                const user = yield this.getUserByID(inID);
+                user.favoriteTvShows = inFavoriteTvShows;
                 this.db.update({ user }, user, {}, (inError, inNumReplaced) => {
                     if (inError) {
                         inReject(inError);

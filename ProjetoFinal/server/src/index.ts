@@ -1,5 +1,6 @@
 import path from 'path';
 import express, { Express, NextFunction, Request, Response } from 'express';
+const cors = require('cors');
 
 import { serverInfo } from "./serverInfo";
 
@@ -11,6 +12,8 @@ import * as Users from "./users";
 import { IUser } from "./users";
 
 const app: Express = express();
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -140,7 +143,7 @@ app.delete("/users/:id", async (inRequest: Request, inResponse: Response) => {
 app.post("/users/:id/favoriteMovies", async (inRequest: Request, inResponse: Response) => {
     try {
         const usersWorker: Users.Worker = new Users.Worker();
-        const user: IUser = await usersWorker.addFavoriteMovie(inRequest.params.id, inRequest.body.movieID);
+        const user: IUser = await usersWorker.updateFavoriteMovies(inRequest.params.id, inRequest.body.movies);
         inResponse.json(user);
     } catch (inError) {
         inResponse.send("error");

@@ -71,6 +71,22 @@ export class Worker {
         });
     }
 
+    public getUserByID(inID: string): Promise<IUser> {
+        return new Promise((inResolve, inReject) => {
+            this.db.find({ _id: inID },
+                (inError: Error | null, inDocs: IUser[]) => {
+                    if (inError) {
+                        inReject(inError);
+                    } else if (inDocs.length === 0) {
+                        inReject(new Error("User not found."));
+                    } else {
+                        inResolve(inDocs[0]);
+                    }
+                }
+            );
+        });
+    }
+
     public login(username: string, password: string): Promise<{user: IUser, token: string}> {
         return new Promise(async (inResolve, inReject) => {
             try {
@@ -104,12 +120,12 @@ export class Worker {
         });
     }
 
-    public addFavoriteMovie(inUsername: string, inMovie: IMovie): Promise<IUser> {
+    public updateFavoriteMovies(inID: string, inFavoriteMovies: IMovie[]): Promise<IUser> {
         return new Promise(async (inResolve, inReject) => {
             try {
-                const user: IUser = await this.getUser(inUsername);
-                user.favoriteMovies.push(inMovie);
-                this.db.update({user}, user, {},
+                const user: IUser = await this.getUserByID(inID);
+                user.favoriteMovies = inFavoriteMovies;
+                this.db.update({ _id: inID }, { $set: { favoriteMovies: inFavoriteMovies } }, {},
                     (inError: Error | null, inNumReplaced: number) => {
                         if (inError) {
                             inReject(inError);
@@ -124,11 +140,11 @@ export class Worker {
         });
     }
 
-    public addFavoriteTvShow(inUsername: string, inTvShow: ITvShow): Promise<IUser> {
+    public updateFavoriteTvShows(inID: string, inFavoriteTvShows: ITvShow[]): Promise<IUser> {
         return new Promise(async (inResolve, inReject) => {
             try {
-                const user: IUser = await this.getUser(inUsername);
-                user.favoriteTvShows.push(inTvShow);
+                const user: IUser = await this.getUserByID(inID);
+                user.favoriteTvShows = inFavoriteTvShows;
                 this.db.update({user}, user, {},
                     (inError: Error | null, inNumReplaced: number) => {
                         if (inError) {
@@ -143,5 +159,4 @@ export class Worker {
             }
         });
     }
-    
 }

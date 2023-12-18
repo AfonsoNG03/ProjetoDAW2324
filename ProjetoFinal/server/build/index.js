@@ -37,10 +37,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
+const cors = require('cors');
 const Movies = __importStar(require("./movies"));
 const TvShows = __importStar(require("./tvShows"));
 const Users = __importStar(require("./users"));
 const app = (0, express_1.default)();
+app.use(cors());
 app.use(express_1.default.json());
 app.use("/", express_1.default.static(path_1.default.join(__dirname, " ../../client/dist")));
 app.use(function (inRequest, inResponse, inNext) {
@@ -163,7 +165,7 @@ app.delete("/users/:id", (inRequest, inResponse) => __awaiter(void 0, void 0, vo
 app.post("/users/:id/favoriteMovies", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const usersWorker = new Users.Worker();
-        const user = yield usersWorker.addFavoriteMovie(inRequest.params.id, inRequest.body.movieID);
+        const user = yield usersWorker.updateFavoriteMovies(inRequest.params.id, inRequest.body.movies);
         inResponse.json(user);
     }
     catch (inError) {
