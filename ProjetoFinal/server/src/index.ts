@@ -155,7 +155,7 @@ app.post("/users/:id/favoriteMovies", async (inRequest: Request, inResponse: Res
 app.post("/users/:id/favoriteTvShows", async (inRequest: Request, inResponse: Response) => {
     try {
         const usersWorker: Users.Worker = new Users.Worker();
-        const user: IUser = await usersWorker.updateFavoriteTvShows(inRequest.params.id, inRequest.body.movies);
+        const user: IUser = await usersWorker.updateFavoriteTvShows(inRequest.params.id, inRequest.body.tvShows);
         inResponse.json(user);
     } catch (inError) {
         inResponse.send("error");

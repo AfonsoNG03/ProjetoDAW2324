@@ -45,30 +45,29 @@ function TvShows() {
 		}
 	}
 
-	const addMovieToFavorites = async (moviesToAdd) => {
+	const addTvShowToFavorites = async (tvShowsToAdd) => {
 		try {
 		  const response = await fetch(
-			`${API_BASE}/users/${user._id}/favoriteMovies`,
+			`${API_BASE}/users/${user._id}/favoriteTvShows`,
 			{
 			  method: "POST",
 			  headers: {
 				"Content-Type": "application/json",
 			  },
-			  body: JSON.stringify({ movies: moviesToAdd }), // Send an array of movies
+			  body: JSON.stringify({ tvShows: tvShowsToAdd }),
 			}
 		  );
 		  const updatedUser = await response.json();
-		  // Do something with the updated user, e.g., update state or trigger a re-fetch
 		  console.log(updatedUser);
 		} catch (error) {
-		  console.error("Error adding movie to favorites:", error);
+		  console.error("Error adding tvShows to favorites:", error);
 		}
 	  };
 	
-	  const handleAddToFavorites = (movie) => {
-		const updatedFavorites = [...favoriteMovies, movie];
-		setFavoriteMovies(updatedFavorites);
-		addMovieToFavorites(updatedFavorites);
+	  const handleAddToFavorites = (tvShow) => {
+		const updatedFavorites = [...favoriteTvShows, tvShow];
+		setFavoriteTvShows(updatedFavorites);
+		addTvShowToFavorites(updatedFavorites);
 	  };
 
 	return (
@@ -87,6 +86,11 @@ function TvShows() {
 					{filteredTvShows.map((tvShow) => (
 						<div className="col-sm-3" key={tvShow._id}>
 							<TvShowCard tvShow={tvShow} />
+							{sessionID ? (
+								<button onClick={() => handleAddToFavorites(tvShow)}>
+								Add to Favorites
+							</button>
+							) : (<></>)}
 						</div>
 					))}
 				</div>

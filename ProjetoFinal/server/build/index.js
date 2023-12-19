@@ -172,4 +172,15 @@ app.post("/users/:id/favoriteMovies", (inRequest, inResponse) => __awaiter(void 
         inResponse.send("error");
     }
 }));
+// Rota para lidar com solicitações POST para "/users/:id/favoriteTvShows"
+app.post("/users/:id/favoriteTvShows", (inRequest, inResponse) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const usersWorker = new Users.Worker();
+        const user = yield usersWorker.updateFavoriteTvShows(inRequest.params.id, inRequest.body.tvShows);
+        inResponse.json(user);
+    }
+    catch (inError) {
+        inResponse.send("error");
+    }
+}));
 app.listen(8080, () => { console.log("Server is listening on port 8080"); });
