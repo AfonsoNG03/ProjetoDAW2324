@@ -4,6 +4,7 @@ import TvShows from './pages/tvShows';
 import Login from './pages/login';
 import Register from './pages/register';
 import Home from './pages/home';
+import Message from './pages/message';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/movies" element={<Movies />} />
+					<Route path="/message/:id" element={<Message />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

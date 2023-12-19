@@ -150,6 +150,18 @@ app.post("/users/:id/favoriteMovies", async (inRequest: Request, inResponse: Res
     }
 });
 
+// Rota para lidar com solicitações POST para "/users/:id/favoriteTvShows"
+
+app.post("/users/:id/favoriteTvShows", async (inRequest: Request, inResponse: Response) => {
+    try {
+        const usersWorker: Users.Worker = new Users.Worker();
+        const user: IUser = await usersWorker.updateFavoriteTvShows(inRequest.params.id, inRequest.body.movies);
+        inResponse.json(user);
+    } catch (inError) {
+        inResponse.send("error");
+    }
+});
+
 app.listen(8080, () => { console.log("Server is listening on port 8080"); });
 
 

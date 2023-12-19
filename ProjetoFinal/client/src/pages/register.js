@@ -35,7 +35,7 @@ function Register() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Registation successful:', data);
-                navigate("/login");
+                navigate("/message/1");
             } else {
                 console.error('Registation failed');
             }

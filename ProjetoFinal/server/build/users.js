@@ -159,7 +159,7 @@ class Worker {
             try {
                 const user = yield this.getUserByID(inID);
                 user.favoriteTvShows = inFavoriteTvShows;
-                this.db.update({ user }, user, {}, (inError, inNumReplaced) => {
+                this.db.update({ _id: inID }, { $set: { favoriteTvShows: inFavoriteTvShows } }, {}, (inError, inNumReplaced) => {
                     if (inError) {
                         inReject(inError);
                     }

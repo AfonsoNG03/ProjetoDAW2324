@@ -11,10 +11,11 @@ function Home() {
 		<div>
 			<h1>Home Page</h1>
 			<button onClick={() => navigate("/movies")}>Movies</button>
-			<button onClick={() => navigate("/tvShows")}>TV Shows</button>
+			<button onClick={() => navigate("/tvShows")}>TV Shows</button>		
 			{sessionID ? (
 				<div>
 					<h2>Welcome, {user.username}!</h2>
+					<button onClick={() => navigate("/message/3")}>Logout</button>
 				</div>
 			) : (
 				<div>

@@ -145,7 +145,7 @@ export class Worker {
             try {
                 const user: IUser = await this.getUserByID(inID);
                 user.favoriteTvShows = inFavoriteTvShows;
-                this.db.update({user}, user, {},
+                this.db.update({ _id: inID }, { $set: { favoriteTvShows: inFavoriteTvShows } }, {},
                     (inError: Error | null, inNumReplaced: number) => {
                         if (inError) {
                             inReject(inError);

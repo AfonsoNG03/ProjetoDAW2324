@@ -33,7 +33,7 @@ function Login() {
                 sessionStorage.setItem('sessionID', token);
                 sessionStorage.setItem('user', JSON.stringify(user));
 
-                navigate("/");
+                navigate("/message/2");
             } else {
                 console.error('Login failed');
             }

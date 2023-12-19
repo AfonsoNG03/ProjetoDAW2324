@@ -9,6 +9,9 @@ function TvShows() {
 	const [tvShows, setTvShows] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredTvShows, setFilteredTvShows] = useState([]);
+	const [favoriteTvShows, setFavoriteTvShows] = useState([]);
+	const sessionID = sessionStorage.getItem('sessionID');
+	const user = JSON.parse(sessionStorage.getItem('user'));
 
 	useEffect(() => {
 		getTvShows();
@@ -23,6 +26,12 @@ function TvShows() {
 	}, [searchTerm, tvShows]);
 
 	
+	useEffect(() => {
+		if (user) {
+		  setFavoriteTvShows(user.favoriteTvShows);
+		}
+	  }, []);
+
 
 	const getTvShows = async () => {
 		try {
@@ -35,6 +44,32 @@ function TvShows() {
 			console.log(error);
 		}
 	}
+
+	const addMovieToFavorites = async (moviesToAdd) => {
+		try {
+		  const response = await fetch(
+			`${API_BASE}/users/${user._id}/favoriteMovies`,
+			{
+			  method: "POST",
+			  headers: {
+				"Content-Type": "application/json",
+			  },
+			  body: JSON.stringify({ movies: moviesToAdd }), // Send an array of movies
+			}
+		  );
+		  const updatedUser = await response.json();
+		  // Do something with the updated user, e.g., update state or trigger a re-fetch
+		  console.log(updatedUser);
+		} catch (error) {
+		  console.error("Error adding movie to favorites:", error);
+		}
+	  };
+	
+	  const handleAddToFavorites = (movie) => {
+		const updatedFavorites = [...favoriteMovies, movie];
+		setFavoriteMovies(updatedFavorites);
+		addMovieToFavorites(updatedFavorites);
+	  };
 
 	return (
 		<div className="App">
