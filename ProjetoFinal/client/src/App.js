@@ -5,6 +5,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import Home from './pages/home';
 import Message from './pages/message';
+import Profile from './pages/profile';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 					<Route path="/register" element={<Register />} />
 					<Route path="/movies" element={<Movies />} />
 					<Route path="/message/:id" element={<Message />} />
+					<Route path="/profile" element={<Profile />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

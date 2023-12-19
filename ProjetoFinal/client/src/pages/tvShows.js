@@ -65,10 +65,21 @@ function TvShows() {
 	  };
 	
 	  const handleAddToFavorites = (tvShow) => {
-		const updatedFavorites = [...favoriteTvShows, tvShow];
-		setFavoriteTvShows(updatedFavorites);
-		addTvShowToFavorites(updatedFavorites);
-	  };
+		const isTvShowInFavorites = favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id);
+	
+		if (isTvShowInFavorites) {
+			// If the movie is already in favorites, remove it
+			const updatedFavorites = favoriteTvShows.filter((favTvShow) => favTvShow._id !== tvShow._id);
+			setFavoriteTvShows(updatedFavorites);
+			addTvShowToFavorites(updatedFavorites);
+		} else {
+			// If the movie is not in favorites, add it
+			const updatedFavorites = [...favoriteTvShows, tvShow];
+			setFavoriteTvShows(updatedFavorites);
+			addTvShowToFavorites(updatedFavorites);
+		}
+	};
+
 
 	return (
 		<div className="App">
@@ -88,7 +99,8 @@ function TvShows() {
 							<TvShowCard tvShow={tvShow} />
 							{sessionID ? (
 								<button onClick={() => handleAddToFavorites(tvShow)}>
-								Add to Favorites
+								{favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id) ? "Remove from favorites" :
+								"Add to favorites"}
 							</button>
 							) : (<></>)}
 						</div>

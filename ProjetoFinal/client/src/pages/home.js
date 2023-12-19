@@ -15,6 +15,7 @@ function Home() {
 			{sessionID ? (
 				<div>
 					<h2>Welcome, {user.username}!</h2>
+					<button onClick={() => navigate("/profile")}>Profile</button>
 					<button onClick={() => navigate("/message/3")}>Logout</button>
 				</div>
 			) : (

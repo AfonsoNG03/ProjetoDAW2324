@@ -46,6 +46,8 @@ function Register() {
 
     return (
         <div>
+            <button onClick={() => navigate("/")}>Home</button>
+            <button onClick={() => navigate("/login")}>Login</button>
             <h1>Register</h1>
 
             <form onSubmit={handleSubmit}>

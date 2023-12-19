@@ -71,12 +71,12 @@ function Movies() {
 			// If the movie is already in favorites, remove it
 			const updatedFavorites = favoriteMovies.filter((favMovie) => favMovie._id !== movie._id);
 			setFavoriteMovies(updatedFavorites);
-			addMovieToFavorites(favoriteMovies);
+			addMovieToFavorites(updatedFavorites);
 		} else {
 			// If the movie is not in favorites, add it
 			const updatedFavorites = [...favoriteMovies, movie];
 			setFavoriteMovies(updatedFavorites);
-			addMovieToFavorites(favoriteMovies);
+			addMovieToFavorites(updatedFavorites);
 		}
 	};
 
@@ -100,8 +100,8 @@ function Movies() {
 							<MovieCard movie={movie} />
 							{sessionID ? (
 								<button onClick={() => handleAddToFavorites(movie)}>
-								{favoriteMovies.some((favMovie) => favMovie._id === movie._id) ? "Add to favorites" :
-								"Remove from favorites"}
+								{favoriteMovies.some((favMovie) => favMovie._id === movie._id) ? "Remove from favorites" :
+								"Add to favorites"}
 							</button>
 							) : (<></>)}
 						</div>
