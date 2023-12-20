@@ -10,6 +10,7 @@ function TvShows() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredTvShows, setFilteredTvShows] = useState([]);
 	const [favoriteTvShows, setFavoriteTvShows] = useState([]);
+	const [sortingMethod, setSortingMethod] = useState("ranking"); // Default sorting method
 	const sessionID = sessionStorage.getItem('sessionID');
 	const user = JSON.parse(sessionStorage.getItem('user'));
 
@@ -18,12 +19,19 @@ function TvShows() {
 	}, []);
 
 	useEffect(() => {
-		// Filter tvshows based on the search term
-		const filtered = tvShows.filter(tvShow =>
+		const filtered = tvShows
+		  .filter((tvShow) =>
 			tvShow.title.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-		setFilteredTvShows(filtered);
-	}, [searchTerm, tvShows]);
+		  )
+		  .sort((a, b) => {
+			if (sortingMethod === "ranking") {
+			  return b.rating - a.rating;
+			} else {
+			  return a.title.localeCompare(b.title);
+			}
+		  });
+		  setFilteredTvShows(filtered);
+		}, [searchTerm, tvShows, sortingMethod]);
 
 	
 	useEffect(() => {
@@ -58,6 +66,7 @@ function TvShows() {
 			}
 		  );
 		  const updatedUser = await response.json();
+		  sessionStorage.setItem('user', JSON.stringify(updatedUser));
 		  console.log(updatedUser);
 		} catch (error) {
 		  console.error("Error adding tvShows to favorites:", error);
@@ -80,6 +89,9 @@ function TvShows() {
 		}
 	};
 
+	const handleSortChange = (e) => {
+		setSortingMethod(e.target.value);
+	  };
 
 	return (
 		<div className="App">
@@ -92,6 +104,14 @@ function TvShows() {
 				value={searchTerm}
 				onChange={(e) => setSearchTerm(e.target.value)}
 			/>
+
+			{/* Sorting dropdown */}
+			<label htmlFor="sort">Sort by:</label>
+			<select id="sort" value={sortingMethod} onChange={handleSortChange}>
+				<option value="ranking">Ranking</option>
+				<option value="alphabetical">Alphabetical</option>
+			</select>
+			
 			<div className="container">
 				<div className="row">
 					{filteredTvShows.map((tvShow) => (

@@ -10,27 +10,36 @@ function Movies() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredMovies, setFilteredMovies] = useState([]);
 	const [favoriteMovies, setFavoriteMovies] = useState([]);
-	const sessionID = sessionStorage.getItem('sessionID');
-	const user = JSON.parse(sessionStorage.getItem('user'));
+	const [sortingMethod, setSortingMethod] = useState("ranking"); // Default sorting method
+	const sessionID = sessionStorage.getItem("sessionID");
+	const user = JSON.parse(sessionStorage.getItem("user"));
 
 	useEffect(() => {
 		getMovies();
 	}, []);
 
 	useEffect(() => {
-		// Filter movies based on the search term
-		const filtered = movies.filter(movie =>
+		// Filter and sort movies based on the search term and sorting method
+		const filtered = movies
+		  .filter((movie) =>
 			movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-		setFilteredMovies(filtered);
-	}, [searchTerm, movies]);
+		  )
+		  .sort((a, b) => {
+			if (sortingMethod === "ranking") {
+			  return b.rating - a.rating; // Sort by ranking
+			} else {
+			  return a.title.localeCompare(b.title); // Sort alphabetically
+			}
+		  });
+		  setFilteredMovies(filtered);
+		}, [searchTerm, movies, sortingMethod]);		  
 
 	useEffect(() => {
 		// Load user's favorite movies on page load
 		if (user) {
-		  setFavoriteMovies(user.favoriteMovies);
+			setFavoriteMovies(user.favoriteMovies);
 		}
-	  }, []);
+	}, []);
 
 	const getMovies = async () => {
 		try {
@@ -38,38 +47,43 @@ function Movies() {
 			const data = await response.json();
 			setMovies(data);
 			console.log(data);
-		}
-		catch (error) {
+		} catch (error) {
 			console.log(error);
 		}
-	}
+	};
 
 	const addMovieToFavorites = async (moviesToAdd) => {
 		try {
-		  const response = await fetch(
-			`${API_BASE}/users/${user._id}/favoriteMovies`,
-			{
-			  method: "POST",
-			  headers: {
-				"Content-Type": "application/json",
-			  },
-			  body: JSON.stringify({ movies: moviesToAdd }), // Send an array of movies
-			}
-		  );
-		  const updatedUser = await response.json();
-		  // Do something with the updated user, e.g., update state or trigger a re-fetch
-		  console.log(updatedUser);
+			const response = await fetch(
+				`${API_BASE}/users/${user._id}/favoriteMovies`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ movies: moviesToAdd }), // Send an array of movies
+				}
+			);
+			const updatedUser = await response.json();
+			sessionStorage.setItem("user", JSON.stringify(updatedUser));
+			// Do something with the updated user, e.g., update state or trigger a re-fetch
+			console.log(updatedUser);
 		} catch (error) {
-		  console.error("Error adding movie to favorites:", error);
+			console.error("Error adding movie to favorites:", error);
 		}
-	  };
+	};
 	
-	  const handleAddToFavorites = (movie) => {
-		const isMovieInFavorites = favoriteMovies.some((favMovie) => favMovie._id === movie._id);
-	
+
+	const handleAddToFavorites = (movie) => {
+		const isMovieInFavorites = favoriteMovies.some(
+			(favMovie) => favMovie._id === movie._id
+		);
+
 		if (isMovieInFavorites) {
 			// If the movie is already in favorites, remove it
-			const updatedFavorites = favoriteMovies.filter((favMovie) => favMovie._id !== movie._id);
+			const updatedFavorites = favoriteMovies.filter(
+				(favMovie) => favMovie._id !== movie._id
+			);
 			setFavoriteMovies(updatedFavorites);
 			addMovieToFavorites(updatedFavorites);
 		} else {
@@ -79,6 +93,10 @@ function Movies() {
 			addMovieToFavorites(updatedFavorites);
 		}
 	};
+
+	const handleSortChange = (e) => {
+		setSortingMethod(e.target.value);
+	  };
 
 	return (
 		<div className="App">
@@ -93,6 +111,13 @@ function Movies() {
 				onChange={(e) => setSearchTerm(e.target.value)}
 			/>
 
+			{/* Sorting dropdown */}
+			<label htmlFor="sort">Sort by:</label>
+			<select id="sort" value={sortingMethod} onChange={handleSortChange}>
+				<option value="ranking">Ranking</option>
+				<option value="alphabetical">Alphabetical</option>
+			</select>
+
 			<div className="container">
 				<div className="row">
 					{filteredMovies.map((movie) => (
@@ -100,10 +125,13 @@ function Movies() {
 							<MovieCard movie={movie} />
 							{sessionID ? (
 								<button onClick={() => handleAddToFavorites(movie)}>
-								{favoriteMovies.some((favMovie) => favMovie._id === movie._id) ? "Remove from favorites" :
-								"Add to favorites"}
-							</button>
-							) : (<></>)}
+									{favoriteMovies.some((favMovie) => favMovie._id === movie._id)
+										? "Remove from favorites"
+										: "Add to favorites"}
+								</button>
+							) : (
+								<></>
+							)}
 						</div>
 					))}
 				</div>

@@ -38,6 +38,7 @@ function Profile() {
 		  );
 		  const updatedUser = await response.json();
 		  console.log(updatedUser);
+		  sessionStorage.setItem('user', JSON.stringify(updatedUser));
 		} catch (error) {
 		  console.error("Error adding tvShows to favorites:", error);
 		}
@@ -56,6 +57,7 @@ function Profile() {
 			}
 		  );
 		  const updatedUser = await response.json();
+		  sessionStorage.setItem('user', JSON.stringify(updatedUser));
 		  // Do something with the updated user, e.g., update state or trigger a re-fetch
 		  console.log(updatedUser);
 		} catch (error) {
