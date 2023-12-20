@@ -8,8 +8,11 @@ function Home() {
 	const navigate = useNavigate();
 
 	return (
-		<div>
-			<h1>Home Page</h1>
+		<div class="home"> 
+			<div class="welcome-text">
+				<h1>Welcome to the Movie Database!</h1>
+				<p>Here you can find information about movies and tv shows, and select your favorites</p>
+			</div>
 			<button onClick={() => navigate("/movies")}>Movies</button>
 			<button onClick={() => navigate("/tvShows")}>TV Shows</button>		
 			{sessionID ? (
