@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import TvShowCard from "../components/TvShowCard";
 import MovieCard from "../components/MovieCard";
+import Header from "../components/Header"
 import { useState, useEffect } from "react";
 const API_BASE = "http://localhost:8080";
 
@@ -100,6 +101,7 @@ function Profile() {
 
     return (
         <div>
+			<Header />
             <button onClick={() => navigate("/")}>Home</button>
             <button onClick={() => navigate("/message/3")}>Logout</button>
             <h1>Favorite Movies</h1>

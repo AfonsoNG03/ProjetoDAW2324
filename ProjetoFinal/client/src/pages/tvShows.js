@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TvShowCard from "../components/TvShowCard";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header"
 
 const API_BASE = "http://localhost:8080";
 
@@ -95,6 +96,7 @@ function TvShows() {
 
 	return (
 		<div className="App">
+			<Header />
 			<button onClick={() => navigate("/")}>Home</button>
 			<button onClick={() => navigate("/movies")}>Movies</button>
 			{/* Search bar */}

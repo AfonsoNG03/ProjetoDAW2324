@@ -1,0 +1,34 @@
+.home {
+    background-image: url("../../public/background.jpg");
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    background-size: cover;
+    background-position: center;
+    top: 0;
+    left: 0;
+}
+
+.overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Adjust the alpha value for opacity */
+  }
+
+  .content {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1; /* Ensure content is above the overlay */
+    padding-top: 10%/* adjust as needed */;
+  }
+
+.welcome-text {
+    font-size: 2em;
+    margin: 0.5em;
+}

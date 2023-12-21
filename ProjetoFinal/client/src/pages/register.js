@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header"
 
 const API_BASE = "http://localhost:8080";
 
@@ -46,6 +47,7 @@ function Register() {
 
     return (
         <div>
+            <Header />
             <button onClick={() => navigate("/")}>Home</button>
             <button onClick={() => navigate("/login")}>Login</button>
             <h1>Register</h1>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header"
 
 const API_BASE = "http://localhost:8080";
 
@@ -100,6 +101,7 @@ function Movies() {
 
 	return (
 		<div className="App">
+			<Header />
 			<button onClick={() => navigate("/")}>Home</button>
 			<button onClick={() => navigate("/tvShows")}>tvShows</button>
 
