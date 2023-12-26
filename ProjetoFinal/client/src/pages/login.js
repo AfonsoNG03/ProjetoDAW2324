@@ -14,12 +14,14 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // Create a user object with the input data
         const user = {
             username: name,
             password: password
         }
 
         try {
+             //Fast um POST request para endpoint de login
             const response = await fetch(`${API_BASE}/login`, {
                 method: "POST",
                 headers: {
@@ -27,19 +29,25 @@ function Login() {
                 },
                 body: JSON.stringify(user)
             });
+            //Verifica se o login foi bem sucedido
             if (response.ok) {
+                //Faz parse dos dados do response
                 const data = await response.json();
                 console.log('Login successful:', data);
+                //Extrai a informacao do token e do user do response
                 const token = data.token;
                 const user = data.user;
+                //Armazena a informacao do token e do user no session storage
                 sessionStorage.setItem('sessionID', token);
                 sessionStorage.setItem('user', JSON.stringify(user));
 
                 navigate("/message/2");
             } else {
+                 //Se o login falhar
                 console.error('Login failed');
             }
         } catch (error) {
+            //Lanca um erro se uma excecao ocorre durante o registo
             console.error('Error during login:', error.message);
         }
     }

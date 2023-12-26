@@ -5,6 +5,7 @@ import Header from "../components/Header"
 const API_BASE = "http://localhost:8080";
 
 function Home() {
+	//Recupera informacoes da sessao
 	const sessionID = sessionStorage.getItem('sessionID');
 	const user = JSON.parse(sessionStorage.getItem('user'));
 	const navigate = useNavigate();

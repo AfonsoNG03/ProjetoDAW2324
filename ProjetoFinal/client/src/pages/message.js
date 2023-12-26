@@ -2,38 +2,45 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function Message() {
+    //Hook para navegacao
     const navigate = useNavigate();
-    const { id } = useParams()
-    
+
+    //Hook para acessar parametros da rota
+    const { id } = useParams();
+
+    //Convertendo o ID para um numero inteiro
     const idNumber = parseInt(id);
 
+    //Funcao para obter mensagem com base no ID
     const getMessage = () => {
         if (idNumber === 1)
-            return "You have successfully registered! You can now log in.";
+            return "Você se registrou com sucesso! Agora você pode fazer login.";
         else if (idNumber === 2)
-            return "You have successfully logged in!";
-        else if (idNumber === 3){
+            return "Você fez login com sucesso!";
+        else if (idNumber === 3) {
             logout();
-            return "You have successfully logged out!";
+            return "Você fez logout com sucesso!";
         }
     }
 
+    //Funcao para realizar logout removendo informacoes da sessao
     const logout = () => {
         sessionStorage.removeItem('sessionID');
         sessionStorage.removeItem('user');
         return;
     }
 
+    //Efeito para redirecionar para a pagina inicial apos um intervalo de 2 segundos
     useEffect(() => {
         let timeleft = 2;
         const downloadTimer = setInterval(() => {
-          if (timeleft <= 0) {
-            clearInterval(downloadTimer);
-            navigate("/");
-          }
-          timeleft -= 1;
+            if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+                navigate("/");
+            }
+            timeleft -= 1;
         }, 1000);
-      }, []);
+    }, []);
 
     return (
         <div>

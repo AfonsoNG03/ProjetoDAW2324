@@ -3,101 +3,111 @@ import MovieCard from "../components/MovieCard";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
 
+// URL base da API
 const API_BASE = "http://localhost:8080";
 
 function Movies() {
+	// Hook para navegacao
 	const navigate = useNavigate();
+
+	//Variaveis de estado usando o hook 'useState'
 	const [movies, setMovies] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredMovies, setFilteredMovies] = useState([]);
 	const [favoriteMovies, setFavoriteMovies] = useState([]);
-	const [sortingMethod, setSortingMethod] = useState("ranking"); // Default sorting method
+	const [sortingMethod, setSortingMethod] = useState("ranking"); // Método de ordenação padrão
+
+	//Recupera informacoes da sessao
 	const sessionID = sessionStorage.getItem("sessionID");
 	const user = JSON.parse(sessionStorage.getItem("user"));
 
+	//Busca filmes na montagem do componente
 	useEffect(() => {
 		getMovies();
 	}, []);
 
+	//Atualiza filmes filtrados com base no termo de pesquisa e metodo de ordenação
 	useEffect(() => {
-		// Filter and sort movies based on the search term and sorting method
-		const filtered = movies
-		  .filter((movie) =>
-			movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-		  )
-		  .sort((a, b) => {
-			if (sortingMethod === "ranking") {
-			  return b.rating - a.rating; // Sort by ranking
-			} else {
-			  return a.title.localeCompare(b.title); // Sort alphabetically
-			}
-		  });
-		  setFilteredMovies(filtered);
-		}, [searchTerm, movies, sortingMethod]);		  
+		const filtrados = movies
+			.filter((filme) =>
+				filme.title.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+			.sort((a, b) => {
+				if (sortingMethod === "ranking") {
+					return b.rating - a.rating; //Ordena por ranking
+				} else {
+					return a.title.localeCompare(b.title); //Ordena alfabeticamente
+				}
+			});
+		setFilteredMovies(filtrados);
+	}, [searchTerm, movies, sortingMethod]);
 
+	//Carrega filmes favoritos do utilizador na carga da página
 	useEffect(() => {
-		// Load user's favorite movies on page load
 		if (user) {
 			setFavoriteMovies(user.favoriteMovies);
 		}
 	}, []);
 
+	//Função para buscar filmes na API
 	const getMovies = async () => {
 		try {
-			const response = await fetch(API_BASE + "/movies");
-			const data = await response.json();
-			setMovies(data);
-			console.log(data);
-		} catch (error) {
-			console.log(error);
+			const resposta = await fetch(API_BASE + "/movies");
+			const dados = await resposta.json();
+			setMovies(dados);
+			console.log(dados);
+		} catch (erro) {
+			console.log(erro);
 		}
 	};
 
-	const addMovieToFavorites = async (moviesToAdd) => {
+	//Funcao para adicionar filmes aos favoritos do utilizador
+	const addMovieToFavorites = async (filmesParaAdicionar) => {
 		try {
-			const response = await fetch(
+			const resposta = await fetch(
 				`${API_BASE}/users/${user._id}/favoriteMovies`,
 				{
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ movies: moviesToAdd }), // Send an array of movies
+					body: JSON.stringify({ movies: filmesParaAdicionar }), //Envia um array de filmes
 				}
 			);
-			const updatedUser = await response.json();
-			sessionStorage.setItem("user", JSON.stringify(updatedUser));
-			// Do something with the updated user, e.g., update state or trigger a re-fetch
-			console.log(updatedUser);
-		} catch (error) {
-			console.error("Error adding movie to favorites:", error);
+			const usuarioAtualizado = await resposta.json();
+			sessionStorage.setItem("user", JSON.stringify(usuarioAtualizado));
+			//Faça algo com o utilizador atualizado, por exemplo, atualize o estado ou acione uma nova busca
+			console.log(usuarioAtualizado);
+		} catch (erro) {
+			console.error("Erro ao adicionar filme aos favoritos:", erro);
 		}
 	};
-	
 
-	const handleAddToFavorites = (movie) => {
-		const isMovieInFavorites = favoriteMovies.some(
-			(favMovie) => favMovie._id === movie._id
+	//Funcao para lidar com adicao/remocao de filmes dos favoritos
+	const handleAddToFavorites = (filme) => {
+		const filmeJaNosFavoritos = favoriteMovies.some(
+			(filmeFav) => filmeFav._id === filme._id
 		);
 
-		if (isMovieInFavorites) {
-			// If the movie is already in favorites, remove it
-			const updatedFavorites = favoriteMovies.filter(
-				(favMovie) => favMovie._id !== movie._id
+		if (filmeJaNosFavoritos) {
+			// Se o filme ja estiver nos favoritos, remova-o
+			const favoritosAtualizados = favoriteMovies.filter(
+				(filmeFav) => filmeFav._id !== filme._id
 			);
-			setFavoriteMovies(updatedFavorites);
-			addMovieToFavorites(updatedFavorites);
+			setFavoriteMovies(favoritosAtualizados);
+			addMovieToFavorites(favoritosAtualizados);
 		} else {
-			// If the movie is not in favorites, add it
-			const updatedFavorites = [...favoriteMovies, movie];
-			setFavoriteMovies(updatedFavorites);
-			addMovieToFavorites(updatedFavorites);
+			// Se o filme nao estiver nos favoritos, adicione-o
+			const favoritosAtualizados = [...favoriteMovies, filme];
+			setFavoriteMovies(favoritosAtualizados);
+			addMovieToFavorites(favoritosAtualizados);
 		}
 	};
 
+	//Funcao para lidar com a mudança do metodo de ordenacao
 	const handleSortChange = (e) => {
 		setSortingMethod(e.target.value);
-	  };
+	};
 
 	return (
 		<div className="App">

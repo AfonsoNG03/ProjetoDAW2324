@@ -9,6 +9,7 @@ export interface IMovie {
 export class Worker {
     private db: Nedb;
 
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "movies.db"),
@@ -16,6 +17,7 @@ export class Worker {
         });
     }
     
+    //Funcao que recupera uma lista de todos os filmes da base de dados
     public listMovies(): Promise<IMovie[]> {
         return new Promise((inResolve, inReject) => {
             this.db.find({},
@@ -30,6 +32,7 @@ export class Worker {
         });
     }
 
+    //Funcao para adicionar um filme para a base de dados
     public addMovie(inMovie: IMovie): Promise<IMovie> {
         return new Promise((inResolve, inReject) => {
             this.db.insert(inMovie,
@@ -43,7 +46,8 @@ export class Worker {
             );
         });
     }
-
+    
+    //Funcao para deletar um filme da base de dados
     public deleteMovie(inID: string): Promise<void> {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID },
@@ -59,6 +63,7 @@ export class Worker {
         });
     }
 
+    //Funcao para adicionar um filme a partir de um ficheiro JSON para a base de dados
     public addMoviesFromFile(filePath: string): Promise<IMovie[]> {
         return new Promise((resolve, reject) => {
             fs.readFile(filePath, 'utf8', (err, data) => {

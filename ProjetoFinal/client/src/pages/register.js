@@ -21,12 +21,14 @@ function Register() {
             return;
         }
 
+        // Create a user object with the input data
         const user = {
             username: name,
             password: password
         }
 
         try {
+            //Faz um POST request para endpoint de registo
             const response = await fetch(`${API_BASE}/register`, {
                 method: "POST",
                 headers: {
@@ -34,14 +36,18 @@ function Register() {
                 },
                 body: JSON.stringify(user)
             });
+            //Verifica se o registo foi bem sucedido
             if (response.ok) {
+                //Faz o parse dos dados do response
                 const data = await response.json();
                 console.log('Registation successful:', data);
                 navigate("/message/1");
             } else {
+                //Se o resgisto falhar
                 console.error('Registation failed');
             }
         } catch (error) {
+            //Lanca um erro se uma excecao ocorre durante o registo
             console.error('Error during Registation:', error.message);
         }
     }

@@ -12,6 +12,7 @@ export interface IUser {
 export class Worker {
     private db: Nedb;
 
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "users.db"),
@@ -19,6 +20,7 @@ export class Worker {
         });
     }
 
+    //Funcao que recupera uma lista de todos os utilizador da base de dados
     public listUsers(): Promise<IUser[]> {
         return new Promise((inResolve, inReject) => {
             this.db.find({},
@@ -33,6 +35,7 @@ export class Worker {
         });
     }
 
+    //Funcao para resgistar um novo utilizador
     public register(username: string, password: string): Promise<IUser> {
         return new Promise(async (inResolve, inReject) => {
             try {
@@ -55,6 +58,7 @@ export class Worker {
         });
     }
 
+    //Funcao que recupera um utilizador pelo nome
     public getUser(inUsername: string): Promise<IUser> {
         return new Promise((inResolve, inReject) => {
             this.db.find({ username: inUsername },
@@ -71,6 +75,7 @@ export class Worker {
         });
     }
 
+    //Funcao que recupera um utilizador pelo ID
     public getUserByID(inID: string): Promise<IUser> {
         return new Promise((inResolve, inReject) => {
             this.db.find({ _id: inID },
@@ -87,6 +92,7 @@ export class Worker {
         });
     }
 
+    //Funcao para fazer o login do utilizador
     public login(username: string, password: string): Promise<{user: IUser, token: string}> {
         return new Promise(async (inResolve, inReject) => {
             try {
@@ -104,7 +110,7 @@ export class Worker {
         });
     }
     
-
+    //Funcao para deletar um utilizador da base de dados pelo ID
     public deleteUser(inID: string): Promise<void> {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID },
@@ -120,6 +126,7 @@ export class Worker {
         });
     }
 
+    //Funcao para atualizar a lista de filmes favoritos de um utilizador
     public updateFavoriteMovies(inID: string, inFavoriteMovies: IMovie[]): Promise<IUser> {
         return new Promise(async (inResolve, inReject) => {
             try {
@@ -140,6 +147,7 @@ export class Worker {
         });
     }
 
+    //Funcao para atualizar a lista de series favoritas de um utilizador
     public updateFavoriteTvShows(inID: string, inFavoriteTvShows: ITvShow[]): Promise<IUser> {
         return new Promise(async (inResolve, inReject) => {
             try {

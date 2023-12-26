@@ -15,84 +15,89 @@ function TvShows() {
 	const sessionID = sessionStorage.getItem('sessionID');
 	const user = JSON.parse(sessionStorage.getItem('user'));
 
+	//Busca series na montagem do componente
 	useEffect(() => {
 		getTvShows();
 	}, []);
 
+	//Atualiza series filtradas com base no termo de pesquisa e metodo de ordenacao
 	useEffect(() => {
-		const filtered = tvShows
-		  .filter((tvShow) =>
-			tvShow.title.toLowerCase().includes(searchTerm.toLowerCase())
-		  )
-		  .sort((a, b) => {
-			if (sortingMethod === "ranking") {
-			  return b.rating - a.rating;
-			} else {
-			  return a.title.localeCompare(b.title);
-			}
-		  });
-		  setFilteredTvShows(filtered);
-		}, [searchTerm, tvShows, sortingMethod]);
+		const filtradas = tvShows
+			.filter((tvShow) =>
+				tvShow.title.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+			.sort((a, b) => {
+				if (sortingMethod === "ranking") {
+					return b.rating - a.rating;
+				} else {
+					return a.title.localeCompare(b.title);
+				}
+			});
+		setFilteredTvShows(filtradas);
+	}, [searchTerm, tvShows, sortingMethod]);
 
-	
+	//Carrega series favoritas do utilizador na carga da pagina
 	useEffect(() => {
 		if (user) {
-		  setFavoriteTvShows(user.favoriteTvShows);
+			setFavoriteTvShows(user.favoriteTvShows);
 		}
-	  }, []);
+	}, []);
 
-
+	//Funcao para buscar series na API
 	const getTvShows = async () => {
 		try {
-			const response = await fetch(API_BASE + "/tvShows");
-			const data = await response.json();
-			setTvShows(data);
-			console.log(data);
+			const resposta = await fetch(API_BASE + "/tvShows");
+			const dados = await resposta.json();
+			setTvShows(dados);
+			console.log(dados);
 		}
-		catch (error) {
-			console.log(error);
+		catch (erro) {
+			console.log(erro);
 		}
 	}
 
-	const addTvShowToFavorites = async (tvShowsToAdd) => {
+	//Funcao para adicionar series aos favoritos do utilizador
+	const addTvShowToFavorites = async (tvShowsParaAdicionar) => {
 		try {
-		  const response = await fetch(
-			`${API_BASE}/users/${user._id}/favoriteTvShows`,
-			{
-			  method: "POST",
-			  headers: {
-				"Content-Type": "application/json",
-			  },
-			  body: JSON.stringify({ tvShows: tvShowsToAdd }),
-			}
-		  );
-		  const updatedUser = await response.json();
-		  sessionStorage.setItem('user', JSON.stringify(updatedUser));
-		  console.log(updatedUser);
-		} catch (error) {
-		  console.error("Error adding tvShows to favorites:", error);
-		}
-	  };
-	
-	  const handleAddToFavorites = (tvShow) => {
-		const isTvShowInFavorites = favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id);
-	
-		if (isTvShowInFavorites) {
-			// If the movie is already in favorites, remove it
-			const updatedFavorites = favoriteTvShows.filter((favTvShow) => favTvShow._id !== tvShow._id);
-			setFavoriteTvShows(updatedFavorites);
-			addTvShowToFavorites(updatedFavorites);
-		} else {
-			// If the movie is not in favorites, add it
-			const updatedFavorites = [...favoriteTvShows, tvShow];
-			setFavoriteTvShows(updatedFavorites);
-			addTvShowToFavorites(updatedFavorites);
+			const resposta = await fetch(
+				`${API_BASE}/users/${user._id}/favoriteTvShows`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ tvShows: tvShowsParaAdicionar }),
+				}
+			);
+			const usuarioAtualizado = await resposta.json();
+			sessionStorage.setItem('user', JSON.stringify(usuarioAtualizado));
+			console.log(usuarioAtualizado);
+		} catch (erro) {
+			console.error("Erro ao adicionar series aos favoritos:", erro);
 		}
 	};
 
+	//Função para lidar com adicao/remocao de series dos favoritos
+	const handleAddToFavorites = (tvShow) => {
+		const estaNaListaDeFavoritos = favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id);
+
+		if (estaNaListaDeFavoritos) {
+			//Se a serie de TV ja estiver nos favoritos, remova-a
+			const favoritosAtualizados = favoriteTvShows.filter((favTvShow) => favTvShow._id !== tvShow._id);
+			setFavoriteTvShows(favoritosAtualizados);
+			addTvShowToFavorites(favoritosAtualizados);
+		} else {
+			//Se a serie de TV nao estiver nos favoritos, adicione-a
+			const favoritosAtualizados = [...favoriteTvShows, tvShow];
+			setFavoriteTvShows(favoritosAtualizados);
+			addTvShowToFavorites(favoritosAtualizados);
+		}
+	};
+
+	//Funcao para lidar com a mudanca do metodo de ordenacao
 	const handleSortChange = (e) => {
 		setSortingMethod(e.target.value);
-	  };
+	};
 
 	return (
 		<div className="App">
@@ -113,7 +118,7 @@ function TvShows() {
 				<option value="ranking">Ranking</option>
 				<option value="alphabetical">Alphabetical</option>
 			</select>
-			
+
 			<div className="container">
 				<div className="row">
 					{filteredTvShows.map((tvShow) => (
@@ -121,9 +126,9 @@ function TvShows() {
 							<TvShowCard tvShow={tvShow} />
 							{sessionID ? (
 								<button onClick={() => handleAddToFavorites(tvShow)}>
-								{favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id) ? "Remove from favorites" :
-								"Add to favorites"}
-							</button>
+									{favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id) ? "Remove from favorites" :
+										"Add to favorites"}
+								</button>
 							) : (<></>)}
 						</div>
 					))}

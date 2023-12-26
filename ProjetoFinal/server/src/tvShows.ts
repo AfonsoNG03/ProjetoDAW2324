@@ -9,6 +9,7 @@ export interface ITvShow {
 export class Worker {
     private db: Nedb;
 
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "tvShows.db"),
@@ -16,6 +17,7 @@ export class Worker {
         });
     }
 
+    //Funcao que recupera uma lista de todas as series da base de dados
     public listTvShows(): Promise<ITvShow[]> {
         return new Promise((inResolve, inReject) => {
             this.db.find({},
@@ -30,6 +32,7 @@ export class Worker {
         });
     }
 
+    //Funcao para adicionar uma serie para a base de dados
     public addTvShow(inMovieShow: ITvShow): Promise<ITvShow> {
         return new Promise((inResolve, inReject) => {
             this.db.insert(inMovieShow,
@@ -44,6 +47,7 @@ export class Worker {
         });
     }
 
+     //Funcao para deletar uma serie da base de dados
     public deleteTvShow(inID: string): Promise<void> {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID },
@@ -59,6 +63,7 @@ export class Worker {
         });
     }
 
+    //Funcao para adicionar uma serie a partir de um ficheiro JSON para a base de dados
     public addTvShowsFromFile(filePath: string): Promise<ITvShow[]> {
         return new Promise((resolve, reject) => {
             fs.readFile(filePath, 'utf8', (err, data) => {
