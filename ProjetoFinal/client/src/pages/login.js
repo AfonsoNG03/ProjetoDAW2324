@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header"
+import Header from "../components/Header";
+import '../css/style_login_register.css';
 
 const API_BASE = "http://localhost:8080";
 
@@ -46,27 +47,37 @@ function Login() {
     return (
         <div>
             <Header />
-            <div className="Login-content">
-                <button onClick={() => navigate("/")}>Home</button>
-                <button onClick={() => navigate("/register")}>Register</button>
-                <h1>Login</h1>
 
+
+            <div className="login-box">
+
+                <div className="button-container">
+                    <h1>Login</h1>
+                    <div>
+                        <button onClick={() => navigate("/")}>Home</button>
+                        <button onClick={() => navigate("/register")}>Register</button>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group">
+                    <div className="user-box">
                         <label htmlFor="username">username</label>
-                        <input className="form-control" type="username" name="username"
+                        <input type="username" name="username"
                             id="username" value={name} onChange={(event) => setName(event.target.value)} />
                     </div>
 
-                    <div className="form-group">
+                    <div className="user-box">
                         <label htmlFor="password">Password</label>
-                        <input className="form-control" type="password" name="password"
+                        <input type="password" name="password"
                             id="password" value={password} onChange={(event) => setPassword(event.target.value)} />
                     </div>
 
-                    <button className="btn btn-primary">Login</button>
+                    <button><span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>Login</button>
                 </form>
             </div>
+
         </div>
     )
 }
