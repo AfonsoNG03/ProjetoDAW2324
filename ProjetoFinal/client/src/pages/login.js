@@ -46,25 +46,27 @@ function Login() {
     return (
         <div>
             <Header />
-            <button onClick={() => navigate("/")}>Home</button>
-            <button onClick={() => navigate("/register")}>Register</button>
-            <h1>Login</h1>
+            <div className="Login-content">
+                <button onClick={() => navigate("/")}>Home</button>
+                <button onClick={() => navigate("/register")}>Register</button>
+                <h1>Login</h1>
 
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">username</label>
-                    <input className="form-control" type="username" name="username" 
-                        id="username" value={name} onChange={(event) => setName(event.target.value)}/>
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">username</label>
+                        <input className="form-control" type="username" name="username"
+                            id="username" value={name} onChange={(event) => setName(event.target.value)} />
+                    </div>
 
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input className="form-control" type="password" name="password" 
-                    id="password" value={password} onChange={(event) => setPassword(event.target.value)}/>
-                </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input className="form-control" type="password" name="password"
+                            id="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                    </div>
 
-                <button className="btn btn-primary">Login</button>
-            </form>
+                    <button className="btn btn-primary">Login</button>
+                </form>
+            </div>
         </div>
     )
 }

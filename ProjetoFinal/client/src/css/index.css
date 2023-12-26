@@ -5,8 +5,6 @@
 }
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
@@ -14,8 +12,8 @@
 body {
     background-color: var(--dark-alt);
     color: var(--light);
-    margin-top: 10%;
-    padding-top: 10%/* adjust as needed */;
+    margin: 0%;
+    overflow-x: hidden;
 }
 
 button {
