@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
+import  "../css/movies-show-interface.css";
 
 // URL base da API
 const API_BASE = "http://localhost:8080";
@@ -112,23 +113,31 @@ function Movies() {
 	return (
 		<div className="App">
 			<Header />
-			<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/tvShows")}>tvShows</button>
+			{/*<button onClick={() => navigate("/")}>Home</button>
+			<button onClick={() => navigate("/tvShows")}>tvShows</button>*/}
 
 			{/* Search bar */}
-			<input
-				type="text"
-				placeholder="Search by name..."
-				value={searchTerm}
-				onChange={(e) => setSearchTerm(e.target.value)}
-			/>
+			<div className="search-container">
+				<div className="search-icon">
+					<i class='bx bx-search icon'></i>
+					<input className="input-field"
+						type="text"
+						placeholder="  Search by name..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
+				</div>
+			</div>
+			
 
 			{/* Sorting dropdown */}
-			<label htmlFor="sort">Sort by:</label>
-			<select id="sort" value={sortingMethod} onChange={handleSortChange}>
-				<option value="ranking">Ranking</option>
-				<option value="alphabetical">Alphabetical</option>
-			</select>
+			<div style={{paddingInline: "40px"}}>
+				<label htmlFor="sort" className="sort-label">Sort by:</label>
+				<select className="sort-select" id="sort" value={sortingMethod} onChange={handleSortChange}>
+					<option value="ranking">Ranking</option>
+					<option value="alphabetical">Alphabetical</option>
+				</select>
+			</div>
 
 			<div className="container">
 				<div className="row">

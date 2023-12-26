@@ -28,12 +28,14 @@ const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const Datastore = require("nedb");
 class Worker {
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "tvShows.db"),
             autoload: true
         });
     }
+    //Funcao que recupera uma lista de todas as series da base de dados
     listTvShows() {
         return new Promise((inResolve, inReject) => {
             this.db.find({}, (inError, inDocs) => {
@@ -46,6 +48,7 @@ class Worker {
             });
         });
     }
+    //Funcao para adicionar uma serie para a base de dados
     addTvShow(inMovieShow) {
         return new Promise((inResolve, inReject) => {
             this.db.insert(inMovieShow, (inError, inNewDoc) => {
@@ -58,6 +61,7 @@ class Worker {
             });
         });
     }
+    //Funcao para deletar uma serie da base de dados
     deleteTvShow(inID) {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID }, {}, (inError, inNumRemoved) => {
@@ -70,6 +74,7 @@ class Worker {
             });
         });
     }
+    //Funcao para adicionar uma serie a partir de um ficheiro JSON para a base de dados
     addTvShowsFromFile(filePath) {
         return new Promise((resolve, reject) => {
             fs.readFile(filePath, 'utf8', (err, data) => {
