@@ -6,6 +6,18 @@ const MovieCard = ({ movie, handleAddToFavorites, favoriteMovies }) => {
         (favMovie) => favMovie._id === movie._id
     );
 
+    const renderCategories = (categories) => {
+        const categoryArray = categories.split(",");
+    
+        const categoryButtons = categoryArray.map((category,index) => (
+          <button key={index} className="transparent-button">
+            {category.trim()}
+          </button>
+        ));
+    
+        return categoryButtons;
+    };
+
     return (
         <div className="card">
             <div className="card-image">
@@ -16,7 +28,7 @@ const MovieCard = ({ movie, handleAddToFavorites, favoriteMovies }) => {
                 <p>
                     <span>{movie.year}</span>
                     <span>{movie.director}</span>
-                    <span>{movie.category}</span>
+                    <span> {renderCategories(movie.category)}</span>
                 </p>
                 <span clas="rating">{movie.rating}</span>
                 <p class="card-description">

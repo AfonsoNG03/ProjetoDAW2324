@@ -3,6 +3,7 @@ import TvShowCard from "../components/TvShowCard";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
 import "../css/movies.css";
+import  "../css/movies-show-interface.css";
 
 const API_BASE = "http://localhost:8080";
 
@@ -103,22 +104,29 @@ function TvShows() {
 	return (
 		<div className="App">
 			<Header />
-			<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/movies")}>Movies</button>
+			{/*<button onClick={() => navigate("/")}>Home</button>
+			<button onClick={() => navigate("/movies")}>Movies</button>*/}
 			{/* Search bar */}
-			<input
-				type="text"
-				placeholder="Search by name..."
-				value={searchTerm}
-				onChange={(e) => setSearchTerm(e.target.value)}
-			/>
+			<div className="search-container">
+				<div className="search-icon">
+					<i class='bx bx-search icon'></i>
+					<input className="input-field"
+						type="text"
+						placeholder="  Search by name..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
+				</div>
+			</div>
 
 			{/* Sorting dropdown */}
-			<label htmlFor="sort">Sort by:</label>
-			<select id="sort" value={sortingMethod} onChange={handleSortChange}>
-				<option value="ranking">Ranking</option>
-				<option value="alphabetical">Alphabetical</option>
-			</select>
+			<div style={{paddingInline: "40px"}}>
+				<label htmlFor="sort" className="sort-label">Sort by:</label>
+				<select className="sort-select" id="sort" value={sortingMethod} onChange={handleSortChange}>
+					<option value="ranking">Ranking</option>
+					<option value="alphabetical">Alphabetical</option>
+				</select>
+			</div>
 
 			<div className="Container">
 				{filteredTvShows.map((tvShow) => (
