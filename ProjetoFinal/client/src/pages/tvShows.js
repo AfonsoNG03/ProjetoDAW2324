@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TvShowCard from "../components/TvShowCard";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
+import "../css/movies.css";
 
 const API_BASE = "http://localhost:8080";
 
@@ -119,20 +120,16 @@ function TvShows() {
 				<option value="alphabetical">Alphabetical</option>
 			</select>
 
-			<div className="container">
-				<div className="row">
-					{filteredTvShows.map((tvShow) => (
-						<div className="col-sm-3" key={tvShow._id}>
-							<TvShowCard tvShow={tvShow} />
-							{sessionID ? (
-								<button onClick={() => handleAddToFavorites(tvShow)}>
-									{favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id) ? "Remove from favorites" :
-										"Add to favorites"}
-								</button>
-							) : (<></>)}
-						</div>
-					))}
-				</div>
+			<div className="Container">
+				{filteredTvShows.map((tvShow) => (
+					<div className="col-sm-6" key={tvShow._id}>
+						<TvShowCard
+							tvShow={tvShow}
+							handleAddToFavorites={handleAddToFavorites}
+							favoriteTvShows={favoriteTvShows}
+						/>
+					</div>
+				))}
 			</div>
 		</div>
 	);

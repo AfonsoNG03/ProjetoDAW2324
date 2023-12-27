@@ -28,12 +28,14 @@ const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
 const Datastore = require("nedb");
 class Worker {
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "movies.db"),
             autoload: true
         });
     }
+    //Funcao que recupera uma lista de todos os filmes da base de dados
     listMovies() {
         return new Promise((inResolve, inReject) => {
             this.db.find({}, (inError, inDocs) => {
@@ -46,6 +48,7 @@ class Worker {
             });
         });
     }
+    //Funcao para adicionar um filme para a base de dados
     addMovie(inMovie) {
         return new Promise((inResolve, inReject) => {
             this.db.insert(inMovie, (inError, inNewDoc) => {
@@ -58,6 +61,7 @@ class Worker {
             });
         });
     }
+    //Funcao para deletar um filme da base de dados
     deleteMovie(inID) {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID }, {}, (inError, inNumRemoved) => {
@@ -70,6 +74,7 @@ class Worker {
             });
         });
     }
+    //Funcao para adicionar um filme a partir de um ficheiro JSON para a base de dados
     addMoviesFromFile(filePath) {
         return new Promise((resolve, reject) => {
             fs.readFile(filePath, 'utf8', (err, data) => {

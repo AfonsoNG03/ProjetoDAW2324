@@ -1,15 +1,31 @@
 import React from "react";
+import "../css/movies.css";
 
-const TvShowCard = ( {tvShow} ) => {
+const TvShowCard = ({ tvShow, handleAddToFavorites, favoriteTvShows }) => {
+    const isTvShowInFavorites = Array.isArray(favoriteTvShows) &&
+        favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id);
+
     return (
-        <div className="tvShow">
-            <p>{tvShow.year}</p>
-            <p>{tvShow.rating}</p>
-            <p>{tvShow.category}</p>
-            <p>{tvShow.director}</p>
-            <img src={tvShow.image} style={{ width: "300px", height: "450px" }}/>
-            <h2>{tvShow.title}</h2>
-            <p>{tvShow.description}</p>
+        <div className="card">
+            <div className="card-image">
+                <img src={tvShow.image} />
+            </div>
+            <div className="card-body">
+                <span className="card-title">{tvShow.title}</span>
+                <p>
+                    <span>{tvShow.year}</span>
+                    <span>{tvShow.director}</span>
+                    <span>{tvShow.category}</span>
+                </p>
+                <span clas="rating">{tvShow.rating}</span>
+                <p class="card-description">
+                    {tvShow.description}
+                </p>
+                {/* Add to Favorites button */}
+                <button className="favorites" onClick={() => handleAddToFavorites(tvShow)}>
+                    {isTvShowInFavorites ? "Remove from favorites" : "Add to favorites"}
+                </button>
+            </div>
         </div>
     );
 }

@@ -3,6 +3,7 @@ import TvShowCard from "../components/TvShowCard";
 import MovieCard from "../components/MovieCard";
 import Header from "../components/Header"
 import { useState, useEffect } from "react";
+import "../css/movies.css";
 const API_BASE = "http://localhost:8080";
 
 function Profile() {
@@ -110,27 +111,30 @@ function Profile() {
 	return (
 		<div>
 			<Header />
-			<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/message/3")}>Logout</button>
-			<h1>Favorite Movies</h1>
-			<div className="row">
+			<div className="Title-text">
+				<h1>Favorite Movies</h1>
+			</div>
+			<div className="Container">
 				{movies.map((movie) => (
-					<div className="col-sm-3" key={movie._id}>
-						<MovieCard movie={movie} />
-						<button onClick={() => handleAddMovieToFavorites(movie)}>
-							Remove from favorites
-						</button>
+					<div className="col-sm-6" key={movie._id}>
+						<MovieCard
+							movie={movie}
+							handleAddToFavorites={handleAddMovieToFavorites}
+							favoriteMovies={movies}
+						/>
 					</div>
 				))}
 			</div>
-			<h1>Favorite TV Shows</h1>
-			<div className="row">
+			<div className="Title-text">
+				<h1>Favorite TV Shows</h1>
+			</div>
+			<div className="Container">
 				{tvShows.map((tvShow) => (
-					<div className="col-sm-3" key={tvShow._id}>
-						<TvShowCard tvShow={tvShow} />
-						<button onClick={() => handleAddTvShowToFavorites(tvShow)}>
-							Remove from favorites
-						</button>
+					<div className="col-sm-6" key={tvShow._id}>
+						<TvShowCard tvShow={tvShow}
+							handleAddToFavorites={handleAddTvShowToFavorites}
+							favoriteTvShows={tvShows}
+						/>
 					</div>
 				))}
 			</div>

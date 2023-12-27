@@ -38,12 +38,14 @@ const Datastore = require("nedb");
 const bcrypt = __importStar(require("bcrypt"));
 const jwt = __importStar(require("jsonwebtoken"));
 class Worker {
+    //Construtor para inicializar a NeDB
     constructor() {
         this.db = new Datastore({
             filename: path.join(__dirname, "users.db"),
             autoload: true
         });
     }
+    //Funcao que recupera uma lista de todos os utilizador da base de dados
     listUsers() {
         return new Promise((inResolve, inReject) => {
             this.db.find({}, (inError, inDocs) => {
@@ -56,6 +58,7 @@ class Worker {
             });
         });
     }
+    //Funcao para resgistar um novo utilizador
     register(username, password) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -75,6 +78,7 @@ class Worker {
             });
         }));
     }
+    //Funcao que recupera um utilizador pelo nome
     getUser(inUsername) {
         return new Promise((inResolve, inReject) => {
             this.db.find({ username: inUsername }, (inError, inDocs) => {
@@ -90,6 +94,7 @@ class Worker {
             });
         });
     }
+    //Funcao que recupera um utilizador pelo ID
     getUserByID(inID) {
         return new Promise((inResolve, inReject) => {
             this.db.find({ _id: inID }, (inError, inDocs) => {
@@ -105,6 +110,7 @@ class Worker {
             });
         });
     }
+    //Funcao para fazer o login do utilizador
     login(username, password) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -123,6 +129,7 @@ class Worker {
             }
         }));
     }
+    //Funcao para deletar um utilizador da base de dados pelo ID
     deleteUser(inID) {
         return new Promise((inResolve, inReject) => {
             this.db.remove({ _id: inID }, {}, (inError, inNumRemoved) => {
@@ -135,6 +142,7 @@ class Worker {
             });
         });
     }
+    //Funcao para atualizar a lista de filmes favoritos de um utilizador
     updateFavoriteMovies(inID, inFavoriteMovies) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {
@@ -154,6 +162,7 @@ class Worker {
             }
         }));
     }
+    //Funcao para atualizar a lista de series favoritas de um utilizador
     updateFavoriteTvShows(inID, inFavoriteTvShows) {
         return new Promise((inResolve, inReject) => __awaiter(this, void 0, void 0, function* () {
             try {

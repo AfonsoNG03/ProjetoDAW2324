@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header"
+import "../css/movies.css";
 
 // URL base da API
 const API_BASE = "http://localhost:8080";
@@ -129,24 +130,16 @@ function Movies() {
 				<option value="ranking">Ranking</option>
 				<option value="alphabetical">Alphabetical</option>
 			</select>
-
-			<div className="container">
-				<div className="row">
-					{filteredMovies.map((movie) => (
-						<div className="col-sm-3" key={movie._id}>
-							<MovieCard movie={movie} />
-							{sessionID ? (
-								<button onClick={() => handleAddToFavorites(movie)}>
-									{favoriteMovies.some((favMovie) => favMovie._id === movie._id)
-										? "Remove from favorites"
-										: "Add to favorites"}
-								</button>
-							) : (
-								<></>
-							)}
-						</div>
-					))}
-				</div>
+			<div className="Container">
+				{filteredMovies.map((movie) => (
+					<div className="col-sm-6" key={movie._id}>
+						<MovieCard
+							movie={movie}
+							handleAddToFavorites={handleAddToFavorites}
+							favoriteMovies={favoriteMovies}
+						/>
+					</div>
+				))}
 			</div>
 		</div>
 	);
