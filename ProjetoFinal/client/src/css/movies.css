@@ -21,7 +21,9 @@
 .transparent-button:hover {
     background-color: #fff;
     color: #000; /* Cambiar el color del texto al pasar el ratón por encima */
-}.Container {
+}
+
+.Container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -83,6 +85,7 @@ p {
 .rating {
     margin-top: -10px;
 }
+
 p span {
     margin-left: 10px;
 }

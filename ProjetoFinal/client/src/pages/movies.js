@@ -139,6 +139,7 @@ function Movies() {
 					<option value="alphabetical">Alphabetical</option>
 				</select>
 			</div>
+			
 			<div className="Container">
 				{filteredMovies.map((movie) => (
 					<div className="col-sm-6" key={movie._id}>

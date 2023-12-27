@@ -29,7 +29,9 @@ const TvShowCard = ({ tvShow, handleAddToFavorites, favoriteTvShows }) => {
                 <p>
                     <span>{tvShow.year}</span>
                     <span>{tvShow.director}</span>
-                    <span>{renderCategories(tvShow.category)}</span>
+                </p>
+                <p>
+                <span>{renderCategories(tvShow.category)}</span>
                 </p>
                 <span clas="rating">{tvShow.rating}</span>
                 <p class="card-description">

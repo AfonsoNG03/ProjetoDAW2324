@@ -28,6 +28,8 @@ const MovieCard = ({ movie, handleAddToFavorites, favoriteMovies }) => {
                 <p>
                     <span>{movie.year}</span>
                     <span>{movie.director}</span>
+                </p>
+                <p>
                     <span> {renderCategories(movie.category)}</span>
                 </p>
                 <span clas="rating">{movie.rating}</span>
