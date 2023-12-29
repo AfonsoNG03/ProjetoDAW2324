@@ -6,6 +6,8 @@ const MovieCard = ({ movie, handleAddToFavorites, favoriteMovies }) => {
         (favMovie) => favMovie._id === movie._id
     );
 
+    const sessionID = sessionStorage.getItem('sessionID');
+
     const renderCategories = (categories) => {
         const categoryArray = categories.split(",");
     
@@ -37,9 +39,15 @@ const MovieCard = ({ movie, handleAddToFavorites, favoriteMovies }) => {
                     {movie.description}
                 </p>
                 {/* Add to Favorites button */}
+                
+                {sessionID ?
+                <div>
                 <button className="favorites" onClick={() => handleAddToFavorites(movie)}>
                     {isMovieInFavorites ? "Remove from favorites" : "Add to favorites"}
                 </button>
+                </div> :
+                <div></div>
+                }
             </div>
         </div>
     );

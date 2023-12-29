@@ -7,7 +7,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <a href="#" class="logo">Logo</a>
+            <a href="#" class="logo">MovieBase</a>
 
             <input type="checkbox" id="check" />
             <label for="check" class="icons">
