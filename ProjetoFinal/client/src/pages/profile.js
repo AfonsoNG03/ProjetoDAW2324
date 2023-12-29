@@ -4,6 +4,7 @@ import MovieCard from "../components/MovieCard";
 import Header from "../components/Header"
 import { useState, useEffect } from "react";
 import "../css/movies.css";
+import "../css/profile.css"
 const API_BASE = "http://localhost:8080";
 
 function Profile() {
