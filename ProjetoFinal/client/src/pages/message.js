@@ -1,52 +1,51 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "../css/message.css";
 
 function Message() {
-    //Hook para navegacao
     const navigate = useNavigate();
-
-    //Hook para acessar parametros da rota
     const { id } = useParams();
-
-    //Convertendo o ID para um numero inteiro
     const idNumber = parseInt(id);
+    const [typedMessage, setTypedMessage] = useState("");
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    //Funcao para obter mensagem com base no ID
     const getMessage = () => {
         if (idNumber === 1)
-            return "Você se registrou com sucesso! Agora você pode fazer login.";
+            return "Você se registrou com sucesso!";
         else if (idNumber === 2)
             return "Você fez login com sucesso!";
         else if (idNumber === 3) {
             logout();
             return "Você fez logout com sucesso!";
         }
-    }
+    };
 
-    //Funcao para realizar logout removendo informacoes da sessao
     const logout = () => {
-        sessionStorage.removeItem('sessionID');
-        sessionStorage.removeItem('user');
+        sessionStorage.removeItem("sessionID");
+        sessionStorage.removeItem("user");
         return;
-    }
+    };
 
-    //Efeito para redirecionar para a pagina inicial apos um intervalo de 2 segundos
     useEffect(() => {
-        let timeleft = 2;
-        const downloadTimer = setInterval(() => {
-            if (timeleft <= 0) {
-                clearInterval(downloadTimer);
-                navigate("/");
+        const message = getMessage();
+        const typingTimer = setInterval(() => {
+            if (currentIndex < message.length) {
+                setTypedMessage((prevTypedMessage) => prevTypedMessage + message[currentIndex]);
+                setCurrentIndex((prevIndex) => prevIndex + 1);
             }
-            timeleft -= 1;
-        }, 1000);
-    }, []);
+        }, 50); // Reduced interval for faster typing
 
-    return (
-        <div>
-            <h1>{getMessage()}</h1>
-        </div>
-    );
+        // Redirect to the home page after 2 seconds
+        setTimeout(() => {
+            clearInterval(typingTimer);
+            navigate("/");
+        }, 2000);
+
+        // Cleanup interval on component unmount
+        return () => clearInterval(typingTimer);
+    }, [idNumber, navigate, currentIndex]);
+
+    return <div className="container center">{typedMessage}</div>;
 }
 
 export default Message;
