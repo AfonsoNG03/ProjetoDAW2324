@@ -104,8 +104,6 @@ function TvShows() {
 	return (
 		<div className="App">
 			<Header />
-			{/*<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/movies")}>Movies</button>*/}
 			{/* Search bar */}
 			<div className="search-container">
 				<div className="search-icon">

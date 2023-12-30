@@ -114,8 +114,6 @@ function Movies() {
 	return (
 		<div className="App">
 			<Header />
-			{/*<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/tvShows")}>tvShows</button>*/}
 
 			{/* Search bar */}
 			<div className="search-container">

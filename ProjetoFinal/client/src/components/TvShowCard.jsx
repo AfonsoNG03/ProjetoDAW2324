@@ -6,16 +6,18 @@ const TvShowCard = ({ tvShow, handleAddToFavorites, favoriteTvShows }) => {
     const isTvShowInFavorites = Array.isArray(favoriteTvShows) &&
         favoriteTvShows.some((favTvShow) => favTvShow._id === tvShow._id);
 
+    const sessionID = sessionStorage.getItem('sessionID');
+
 
     const renderCategories = (categories) => {
         const categoryArray = categories.split(",");
-    
-        const categoryButtons = categoryArray.map((category,index) => (
+
+        const categoryButtons = categoryArray.map((category, index) => (
             <button key={index} className="transparent-button">
-              {category.trim()}
+                {category.trim()}
             </button>
         ));
-    
+
         return categoryButtons;
     };
 
@@ -31,16 +33,22 @@ const TvShowCard = ({ tvShow, handleAddToFavorites, favoriteTvShows }) => {
                     <span>{tvShow.director}</span>
                 </p>
                 <p>
-                <span>{renderCategories(tvShow.category)}</span>
+                    <span>{renderCategories(tvShow.category)}</span>
                 </p>
                 <span clas="rating">{tvShow.rating}</span>
                 <p class="card-description">
                     {tvShow.description}
                 </p>
                 {/* Add to Favorites button */}
-                <button className="favorites" onClick={() => handleAddToFavorites(tvShow)}>
-                    {isTvShowInFavorites ? "Remove from favorites" : "Add to favorites"}
-                </button>
+
+                {sessionID ?
+                    <div>
+                        <button className="favorites" onClick={() => handleAddToFavorites(tvShow)}>
+                            {isTvShowInFavorites ? "Remove from favorites" : "Add to favorites"}
+                        </button>
+                    </div> :
+                    <div></div>
+                }
             </div>
         </div>
     );

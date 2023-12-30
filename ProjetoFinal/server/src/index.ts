@@ -2,8 +2,6 @@ import path from 'path';
 import express, { Express, NextFunction, Request, Response } from 'express';
 const cors = require('cors');
 
-import { serverInfo } from "./serverInfo";
-
 import * as Movies from "./movies";
 import { IMovie } from "./movies";
 import * as TvShows from "./tvShows";
